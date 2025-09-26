@@ -16,14 +16,8 @@ font_medium = pygame.font.SysFont("arial", 36)
 font_large = pygame.font.SysFont("timesnewroman", 48)
 
 # Colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-BLUE = (100, 149, 237)
-GREEN = (60, 179, 113)
-RED = (220, 20, 60)
-YELLOW = (255, 215, 0)
-PURPLE = (138, 43, 226)
-BG_COLORS = [BLUE, GREEN, RED, YELLOW, PURPLE]
+GREEN=200, 255, 200
+BG_COLORS = [GREEN]
 
 # Questions list (mixed operations)
 questions = [
@@ -44,12 +38,12 @@ questions = [
     ("What is 14 - 9?", 5),
 ]
 
-def draw_text(text, x, y, font, color=WHITE):
+def draw_text(text, x, y, font, color=(0, 0, 0)):
     surface = font.render(text, True, color)
     screen.blit(surface, (x, y))
 
 def show_message_screen():
-    screen.fill(random.choice(BG_COLORS))
+    screen.fill(RED(BG_COLORS))
     draw_text("🎉 Welcome to the Colorful Math Quiz! 🎉", 50, 50, font_medium)
     draw_text("You'll get 10 questions: addition, subtraction,", 50, 100, font_small)
     draw_text("multiplication, and division.", 50, 140, font_small)
@@ -97,7 +91,7 @@ def show_questions():
                     else:
                         user_input += event.unicode
 
-            screen.fill(random.choice(BG_COLORS))
+            screen.fill(Green)(BG_COLORS)
             draw_text(f"Question {i + 1}", 50, 50, font_large)
             draw_text(question, 50, 120, font_medium)
             draw_text("Type your answer and press Enter:", 50, 180, font_small)
@@ -107,7 +101,7 @@ def show_questions():
     return score
 
 def show_result(score):
-    screen.fill(random.choice(BG_COLORS))
+    screen.fill(green(BG_COLORS))
     draw_text(f"🎯 Your final score is: {score}", 50, 100, font_large)
     draw_text("Want to play again? (Y/N)", 50, 160, font_medium)
     pygame.display.flip()
