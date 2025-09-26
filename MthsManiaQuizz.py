@@ -20,6 +20,11 @@ BLUE = (100, 149, 237)
 GREEN = (34, 177, 76)
 RED = (200, 0, 0)
 
+# Load sounds (replace with actual sound files if available)
+click_sound = pygame.mixer.Sound(bufferpygame.mixer.Sound.buffer(b'\x00' * 100))
+correct_sound = pygame.mixer.Sound(pygame.mixer.Sound.buffer(b'\x00' * 100))
+wrong_sound = pygame.mixer.Sound(pygame.mixer.Sound.buffer(b'\x00' * 100))
+
 # Questions
 questions = [
     ("What is 9 × 4?", 36),
@@ -52,7 +57,6 @@ def game_loop():
     running = True
     clock = pygame.time.Clock()
 
-    # Prepare first question
     question, answer = questions[question_index]
     options = [answer, answer + 2, answer - 3, answer + 5]
     random.shuffle(options)
@@ -128,12 +132,20 @@ def welcome_screen():
     clock = pygame.time.Clock()
     while True:
         screen.fill(BLACK)
+        title_y = 150 + int(10 * abs(pygame.time.get_ticks() // 200 % 2 - 1))
         title = font_large.render("Welcome to the Maths Quiz!", True, WHITE)
-        instructions = font_small.render("Answer 10 questions. +1 for correct, -1 for wrong, 0 for skip.", True, WHITE)
-        start_btn = Button("Start Game", 300, 400, 200, 60, GREEN)
+        screen.blit(title, (100, title_y))
 
-        screen.blit(title, (100, 150))
-        screen.blit(instructions, (100, 220))
+        alpha = int(128 + 127 * abs(pygame.time.get_ticks() // 500 % 2 - 1))
+        instructions_surface = font_small.render(
+            "Answer 10 questions. +1 for correct, -1 for wrong, 0 for skip.", True, WHITE
+        )
+        instructions_surface.set_alpha(alpha)
+        screen.blit(instructions_surface, (100, 220))
+
+        pulse = int(100 + 77 * abs(pygame.time.get_ticks() // 300 % 2 - 1))
+        animated_green = (34, pulse, 76)
+        start_btn = Button("Start Game", 300, 400, 200, 60, animated_green)
         start_btn.draw()
 
         for event in pygame.event.get():
@@ -141,11 +153,12 @@ def welcome_screen():
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                click_sound.play()
                 if start_btn.is_clicked(event.pos):
                     game_loop()
 
         pygame.display.flip()
         clock.tick(60)
 
-# Run the game 
-# welcome_screen()
+# Start the game
+welcome_screen() 
